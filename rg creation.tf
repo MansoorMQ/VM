@@ -5,12 +5,12 @@ terraform {
       version = "4.38.1"
     }
   }
-backend "azurerm" {
-      resource_group_name  = "Mansoor"
-      storage_account_name = "man-storage"
-      container_name       = "man-container"
-      key                  = "key.tfstate"
-  }
+#backend "azurerm" {
+ #     resource_group_name  = "Mansoor"
+  #    storage_account_name = "man-storage"
+   #   container_name       = "man-container"
+    #  key                  = "key.tfstate"
+  #}
 
 }
 
