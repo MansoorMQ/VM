@@ -5,12 +5,12 @@ terraform {
       version = "4.38.1"
     }
   }
-#backend "azurerm" {
- #     resource_group_name  = "Mansoor"
-  #    storage_account_name = "manstorage"
-   #   container_name       = "mancontainer"
-    #  key                  = "key.tfstate"
-  #}
+backend "azurerm" {
+      resource_group_name  = "Mansoor1"
+      storage_account_name = "man1storage"
+      container_name       = "mancontainer"
+      key                  = "key.tfstate"
+  }
 
 }
 
@@ -21,15 +21,15 @@ provider "azurerm" {
 }
 
 # Resource block 1
-resource "azurerm_resource_group" "HR" {
-  name     = "Mansoor"
+resource "azurerm_resource_group" "HR1" {
+  name     = "Mansoor1"
   location = "West Europe"
 }
 
-resource "azurerm_storage_account" "manstorage" {
-  name                     = "manstorage"
-  resource_group_name      = azurerm_resource_group.HR.name
-  location                 = azurerm_resource_group.HR.location
+resource "azurerm_storage_account" "man1storage" {
+  name                     = "man1storage"
+  resource_group_name      = azurerm_resource_group.HR1.name
+  location                 = azurerm_resource_group.HR1.location
   account_tier             = "Standard"
   account_replication_type = "GRS"
 
@@ -38,6 +38,6 @@ resource "azurerm_storage_account" "manstorage" {
 
 resource "azurerm_storage_container" "mancontainer" {
   name                  = "mancontainer"
-  storage_account_id  = azurerm_storage_account.manstorage.id
+  storage_account_id  = azurerm_storage_account.man1storage.id
   container_access_type = "private"
 }
