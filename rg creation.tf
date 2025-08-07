@@ -38,6 +38,6 @@ resource "azurerm_storage_account" "manstorage" {
 
 resource "azurerm_storage_container" "mancontainer" {
   name                  = "mancontainer"
-  storage_account_name  = azurerm_storage_account.manstorage.name
+  storage_account_id  = azurerm_storage_account.manstorage.id
   container_access_type = "private"
 }
