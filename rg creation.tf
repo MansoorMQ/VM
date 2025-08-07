@@ -7,8 +7,8 @@ terraform {
   }
 #backend "azurerm" {
  #     resource_group_name  = "Mansoor"
-  #    storage_account_name = "man-storage"
-   #   container_name       = "man-container"
+  #    storage_account_name = "manstorage"
+   #   container_name       = "mancontainer"
     #  key                  = "key.tfstate"
   #}
 
@@ -26,8 +26,8 @@ resource "azurerm_resource_group" "HR" {
   location = "West Europe"
 }
 
-resource "azurerm_storage_account" "man-storage" {
-  name                     = "man-storage"
+resource "azurerm_storage_account" "manstorage" {
+  name                     = "manstorage"
   resource_group_name      = azurerm_resource_group.HR.name
   location                 = azurerm_resource_group.HR.location
   account_tier             = "Standard"
@@ -36,8 +36,8 @@ resource "azurerm_storage_account" "man-storage" {
     }
 
 
-resource "azurerm_storage_container" "man-container" {
-  name                  = "man-container"
-  storage_account_name  = azurerm_storage_account.man_storage.name
+resource "azurerm_storage_container" "mancontainer" {
+  name                  = "mancontainer"
+  storage_account_name  = azurerm_storage_account.manstorage.name
   container_access_type = "private"
 }
