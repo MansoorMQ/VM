@@ -4,7 +4,7 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "4.38.1"
     }
-    
+
   }
 backend "azurerm" {
       resource_group_name  = "mansoor"
@@ -18,7 +18,7 @@ backend "azurerm" {
 provider "azurerm" {
   # Configuration options
   features {}
-  subscription_id = "805cc58a-b2c1-4e91-97ec-b0ba35c3dc96"
+  subscription_id = "3142e9bb-dc6c-403c-9fcf-cbf1d0163394"
 }
 
 
