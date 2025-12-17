@@ -64,3 +64,60 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'plan'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Parent'
+        environmentServiceNameAzureRM: 'Service connection_waqas'
+
+# -------------------- tfsec Scanning --------------------
+- stage: tfsecScanning
+  displayName: Terraform Security Scanning
+  condition: eq('${{ parameters.ScanningNeeded }}', 'true')
+  jobs:
+  - job: Scanning
+    displayName: Scanning
+    pool: MQ
+    steps:
+    - task: tfsec@1
+      displayName: Run tfsec
+      continueOnError: true
+      inputs:
+        version: 'v1.26.0'
+        dir: '$(System.DefaultWorkingDirectory)/Parent'
+
+# -------------------- Manual Validation --------------------
+- stage: ManualValidation
+  displayName: ManualValidation
+  jobs:
+  - job: ManualValidation
+    displayName: ManualValidation
+    pool: server
+    steps:
+    - task: ManualValidation@1
+      inputs:
+        notifyUsers: 'mansoor.qureshi05@gmail.com'
+        instructions: 'Please approve'
+
+# -------------------- Apply --------------------
+- stage: Apply
+  displayName: Apply
+  jobs:
+  - job: Apply
+    displayName: Apply
+    pool: MQ
+    steps:
+    - task: TerraformTask@5
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        backendServiceArm: 'Service connection_waqas'
+        backendAzureRmStorageAccountName: 'storagemq'
+        backendAzureRmContainerName: 'mq123'
+        backendAzureRmKey: 'key.tfstate'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Parent'
+
+    - task: TerraformTask@5
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Parent'
+        environmentServiceNameAzureRM: 'Service connection_waqas'
+
