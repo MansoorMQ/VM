@@ -1,39 +1,38 @@
-trigger:
-- None
+trigger: none
 
-pool:
-  MQ
+pool: MQ
 
-- task: TerraformInstaller@1
-  inputs:
-    terraformVersion: 'latest'
+steps:
+  - task: TerraformInstaller@1
+    inputs:
+      terraformVersion: 'latest'
 
-- task: TerraformTask@1
-  inputs:
-    provider: 'azurerm'
-    command: 'init'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/Parent'
-    backendServiceArm: 'Service connection_waqas'
-    backendAzureRmStorageAccountName: 'storagemq'
-    backendAzureRmContainerName: 'mq123'
-    backendAzureRmKey: 'key.tfstate'
+  - task: TerraformTask@5
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/Parent'
+      backendServiceArm: 'Service connection_waqas'
+      backendAzureRmStorageAccountName: 'storagemq'
+      backendAzureRmContainerName: 'mq123'
+      backendAzureRmKey: 'key.tfstate'
 
-- task: TerraformTask@2
-  inputs:
-    provider: 'azurerm'
-    command: 'validate'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/Parent'
+  - task: TerraformTask@5
+    inputs:
+      provider: 'azurerm'
+      command: 'validate'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/Parent'
 
-- task: TerraformTask@3
-  inputs:
-    provider: 'azurerm'
-    command: 'plan'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/Parent'
-    environmentServiceNameAzureRM: 'Service connection_waqas'
+  - task: TerraformTask@5
+    inputs:
+      provider: 'azurerm'
+      command: 'plan'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/Parent'
+      environmentServiceNameAzureRM: 'Service connection_waqas'
 
-- task: TerraformTask@4
-  inputs:
-    provider: 'azurerm'
-#    command: 'apply'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/Parent'
-    environmentServiceNameAzureRM: 'Service connection_waqas'
+  - task: TerraformTask@5
+    inputs:
+      provider: 'azurerm'
+  #    command: 'apply'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/Parent'
+      environmentServiceNameAzureRM: 'Service connection_waqas'
