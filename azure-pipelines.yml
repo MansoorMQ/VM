@@ -1,24 +1,39 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
-- storage
+- None
 
 pool:
-  vmImage: Desktop-JBOIPGC
+  MQ
 
-
-steps:
 - task: TerraformInstaller@1
   inputs:
     terraformVersion: 'latest'
-- task: TerraformTask@5
+
+- task: TerraformTask@1
   inputs:
     provider: 'azurerm'
     command: 'init'
-    backendServiceArm: 'service connection using secret'
-    backendAzureRmStorageAccountName: 'man1storage'
-    backendAzureRmContainerName: 'mancontainer'
-    backendAzureRmKey: 'key'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Parent'
+    backendServiceArm: 'Service connection_waqas'
+    backendAzureRmStorageAccountName: 'storagemq'
+    backendAzureRmContainerName: 'mq123'
+    backendAzureRmKey: 'key.tfstate'
+
+- task: TerraformTask@2
+  inputs:
+    provider: 'azurerm'
+    command: 'validate'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Parent'
+
+- task: TerraformTask@3
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Parent'
+    environmentServiceNameAzureRM: 'Service connection_waqas'
+
+- task: TerraformTask@4
+  inputs:
+    provider: 'azurerm'
+#    command: 'apply'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Parent'
+    environmentServiceNameAzureRM: 'Service connection_waqas'
